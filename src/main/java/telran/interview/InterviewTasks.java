@@ -11,10 +11,11 @@ public class InterviewTasks {
      *         the value equaled to a given "sum" value
      */
     static public boolean hasSumTwo(int[] array, int sum) {
-        boolean res = false;
-        if (array.length == 2) {
-            res = Arrays.stream(array).sum() == sum;
+        HashSet<Integer> set = new HashSet<>();
+        int i = 0;
+        while (i < array.length && !set.contains(sum - array[i])) {
+            set.add(array[i++]);
         }
-        return res;
+        return i != array.length; 
     }
 }

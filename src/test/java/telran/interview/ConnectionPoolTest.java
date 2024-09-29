@@ -18,18 +18,13 @@ public class ConnectionPoolTest {
 
     @BeforeEach
     public void setUpConnetionPool() {
-        connectionPool = new ConnectionPool(5) {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<String, Connection> eldestEntry) {
-                return size() > connectionKeys.length;
-            }
-        };
+        connectionPool = new ConnectionPool(5);
         Arrays.stream(connectionArray).forEach(connectionPool::addConnection);
     }
 
     @Test
     void setUpConnetionPoolTest() {
-        assertArrayEquals(connectionKeys, connectionPool.keySet().toArray(String[]::new));
+        assertArrayEquals(connectionKeys, connectionPool.getMap().keySet().toArray(String[]::new));
     }
 
     @Test
@@ -37,7 +32,7 @@ public class ConnectionPoolTest {
         String[] expected = { "yt", "fe", "df", "ds", "bh" };
         Connection connection = new Connection("bh");
         connectionPool.addConnection(connection);
-        assertArrayEquals(expected, connectionPool.keySet().toArray(String[]::new));
+        assertArrayEquals(expected, connectionPool.getMap().keySet().toArray(String[]::new));
         assertThrowsExactly(IllegalStateException.class, () -> connectionPool.addConnection(connection));
     }
 
